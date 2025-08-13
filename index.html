@@ -1,112 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FintechX - Next-Gen Financial SaaS</title>
-    <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
+    <title>오늘의 운세</title>
     <style>
-        body {
-            font-family: 'Inter', Arial, sans-serif;
-            margin: 0;
-            background: #f5f7fa;
-            color: #222;
-        }
-        header {
-            background: #1a237e;
-            color: #fff;
-            padding: 2rem 0 1.5rem 0;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-        }
-        header p {
-            margin: 1rem 0 0 0;
-            font-size: 1.2rem;
-            color: #c5cae9;
-        }
-        .cta-btn {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 2rem;
-            background: #ffca28;
-            color: #1a237e;
-            font-weight: bold;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .cta-btn:hover {
-            background: #ffd54f;
-        }
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin: 3rem 0;
-            padding: 0 1rem;
-        }
-        .feature {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(26,35,126,0.07);
-            padding: 2rem;
-            max-width: 320px;
-            flex: 1 1 280px;
-            text-align: center;
-        }
-        .feature h3 {
-            margin-top: 0;
-            color: #1a237e;
-        }
-        .feature p {
-            color: #555;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem 0 1rem 0;
-            color: #888;
-            font-size: 0.95rem;
-        }
-        @media (max-width: 800px) {
-            .features {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; }
+        .fortune-card { background: #f0f0f0; padding: 20px; margin: 10px 0; border-radius: 10px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>FintechX</h1>
-        <p>Empowering your finances with next-gen SaaS solutions.<br>Fast. Secure. Insightful.</p>
-        <a href="#signup" class="cta-btn">Get Started Free</a>
-    </header>
-
-    <section class="features">
-        <div class="feature">
-            <h3>Real-Time Analytics</h3>
-            <p>Monitor your financial health with live dashboards and actionable insights.</p>
-        </div>
-        <div class="feature">
-            <h3>Bank-Grade Security</h3>
-            <p>Your data is protected with industry-leading encryption and compliance.</p>
-        </div>
-        <div class="feature">
-            <h3>Seamless Integrations</h3>
-            <p>Connect with your favorite banks, apps, and tools in just a few clicks.</p>
-        </div>
-    </section>
-
-    <footer>
-        &copy; 2024 FintechX. All rights reserved.
-    </footer>
+    <h1>🔮 오늘의 운세</h1>
+    <input type="text" id="name" placeholder="이름" />
+    <input type="date" id="birthdate" />
+    <button onclick="getFortune()">운세 보기</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        async function getFortune() {
+            const name = document.getElementById('name').value;
+            const birthdate = document.getElementById('birthdate').value;
+            
+            const response = await fetch('http://127.0.0.1:8000/api/fortune', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, birthdate})
+            });
+            
+            const data = await response.json();
+            document.getElementById('result').innerHTML = `
+                <div class="fortune-card">
+                    <h2>${data.name}님의 오늘 운세</h2>
+                    <p>💕 연애운: ${data.love}</p>
+                    <p>💼 직장운: ${data.career}</p>
+                    <p>🏃 건강운: ${data.health}</p>
+                    <p>🎲 행운의 숫자: ${data.lucky_number}</p>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
